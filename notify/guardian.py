@@ -1,5 +1,5 @@
 import requests
-from notify.article import Article
+from article import Article
 import configparser
 
 config = configparser.ConfigParser()

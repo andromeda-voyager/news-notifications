@@ -3,7 +3,7 @@ from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtGui import QAction, QIcon
 from PySide6.QtWidgets import QApplication, QLabel, QMenu
 import time
-import notify.guardian as guardian
+import guardian
 
 
 class SystemTray(QtWidgets.QWidget):
@@ -46,6 +46,13 @@ class Notification(QtWidgets.QWidget):
 
     def next(self):
         self.articles.pop()
+        self.articles.pop()
+        self.articles.pop()
+        self.articles.pop()
+        self.articles.pop()
+        self.articles.pop()
+  
+
         self.text.setText(self.articles[len(self.articles) - 1].get_title())
         if len(self.articles) < 2:
             self.next_button.hide()

@@ -1,8 +1,7 @@
 import tkinter as tk
 from tkinter import *
 import webbrowser
-import notify.guardian as guardian
-
+import guardian
 
 def callback(url):
     webbrowser.open_new_tab(url)
