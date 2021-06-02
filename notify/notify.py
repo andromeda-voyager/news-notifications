@@ -46,13 +46,6 @@ class Notification(QtWidgets.QWidget):
 
     def next(self):
         self.articles.pop()
-        self.articles.pop()
-        self.articles.pop()
-        self.articles.pop()
-        self.articles.pop()
-        self.articles.pop()
-  
-
         self.text.setText(self.articles[len(self.articles) - 1].get_title())
         if len(self.articles) < 2:
             self.next_button.hide()
