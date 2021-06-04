@@ -2,8 +2,7 @@ import sys
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QApplication
-import guardian
-import nyt
+import news
 
 
 class SystemTrayItem(QtWidgets.QWidget):
@@ -24,7 +23,10 @@ class Notification(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.setStyleSheet("background-color: #343638;")
+        self.setStyleSheet(
+            "QWidget{background-color: #343638;}\
+            QPushButton{border:none; padding:12px; color:white;}\
+            QPushButton:hover{font-weight: bold}")
         self.setFixedSize(500, 100)
         geo = QApplication.primaryScreen().geometry()
         width = geo.width()
@@ -33,9 +35,6 @@ class Notification(QtWidgets.QWidget):
 
         self.button_close = QtWidgets.QPushButton("X", self)
         self.button_close.clicked.connect(self.dismiss)
-        self.button_close.setStyleSheet(
-            "QPushButton:hover{font-weight: bold} QPushButton{border:none; padding:8px; color:white;}"
-        )
 
         self.title = QtWidgets.QLabel("", self)
         self.title.setOpenExternalLinks(True)
@@ -43,10 +42,6 @@ class Notification(QtWidgets.QWidget):
         self.title.setWordWrap(True)
 
         self.button_next = QtWidgets.QPushButton("next", self)
-        self.button_next.setStyleSheet(
-            "QPushButton:hover{font-weight: bold} QPushButton{border:none; padding:10px; color:white;}"
-        )
-
         self.button_next.clicked.connect(self.next)
 
         self.top_layout = QtWidgets.QHBoxLayout()
@@ -65,17 +60,17 @@ class Notification(QtWidgets.QWidget):
     def next(self):
         self.articles.pop()
         article = self.articles[len(self.articles)-1]
-        self.title.setText("<a style=\"color:white;\" href=" + article.get_link() +
+        self.title.setText("<a style=\"color:white; text-decoration:none;\" href=" + article.get_link() +
                            ">" + article.get_title() + "</a>")
         if len(self.articles) < 2:
             self.button_next.hide()
 
     def notify(self):
-        articles = nyt.check_for_new()
+        articles = news.get_new_articles()
         self.articles = articles
         if len(articles) > 0:
             article = articles[len(articles)-1]
-            self.title.setText("<a style=\"color:white;\" href=" + article.get_link() +
+            self.title.setText("<a style=\"color:white; text-decoration:none;\" href=" + article.get_link() +
                                ">" + article.get_title() + "</a>")
             self.show()
 

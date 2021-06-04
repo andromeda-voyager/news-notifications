@@ -4,22 +4,23 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('config.ini')
+
 articles = {}
 
 
 def get_articles():
     r = requests.get(
-        "https://content.guardianapis.com/search?section=science&page=3&show-fields=thumbnail&api-key=" +
-        config['Keys']['Guardian']
+        "https://api.nytimes.com/svc/topstories/v2/science.json?api-key=" +
+        config['Keys']['NYT']
     )
     articles = []
     if r.status_code == 200:
         data = r.json()
-        results = data["response"]["results"]
+        # print(data['results'][0]['multimedia'])
         articles = []
-        for i in results:
+        for i in data['results']:
             articles.append(
-                Article(i["webTitle"], i["webUrl"], i["fields"]["thumbnail"])
+                Article(i["title"], i["url"], i['multimedia'][4]['url'])
             )
     return articles
 
