@@ -3,6 +3,7 @@ from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QApplication
 import guardian
+import nyt
 
 
 class SystemTrayItem(QtWidgets.QWidget):
@@ -39,6 +40,7 @@ class Notification(QtWidgets.QWidget):
         self.title = QtWidgets.QLabel("", self)
         self.title.setOpenExternalLinks(True)
         self.title.setStyleSheet("padding:10px")
+        self.title.setWordWrap(True)
 
         self.button_next = QtWidgets.QPushButton("next", self)
         self.button_next.setStyleSheet(
@@ -69,7 +71,7 @@ class Notification(QtWidgets.QWidget):
             self.button_next.hide()
 
     def notify(self):
-        articles = guardian.check_for_new()
+        articles = nyt.check_for_new()
         self.articles = articles
         if len(articles) > 0:
             article = articles[len(articles)-1]
